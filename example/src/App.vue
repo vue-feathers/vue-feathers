@@ -1,29 +1,19 @@
 <template>
   <div id="app" style="display: flex; flex-direction: column; align-items: center;">
-    <img src="./assets/logo.png">
-    <span v-for="meta in metas" :key="meta.id">
-      {{meta}}
-    </span>
+    <h1>Meta Objects</h1>
+    <feathers-stream :endpoints="['meta']">
+      <div slot-scope="{data}">
+        <div v-for="meta in data.meta" :key="meta.id">
+          <pre style="text-align:left;">{{meta}}</pre>
+        </div>
+      </div>
+    </feathers-stream>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'app',
-  components: {
-    HelloWorld
-  },
-  data() {
-    return {
-      metas: [],
-    }
-  },
-  mounted() {
-    this.$F.service('meta').find()
-      .then(metas=>{this.metas = metas})
-  },
 }
 </script>
 
