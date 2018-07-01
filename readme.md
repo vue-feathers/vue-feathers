@@ -1,12 +1,32 @@
-# Vue-Feathers
+# vue-feathers
 
 > Realtime-frist Vue integrations for Feathers 
 
-### Getting Started
+### What's Feathers?
+
+It's a server-side framework that encapsulates your DBs and other APIs as **services**. Services provide a simple, common syntax of just 7 functions for interfacing with your backend.  
+
+Feathers returns all data to you as if it was from NoSQL sources:
+
+    [{obj1}, {obj2}, {obj3}, ...]
+
+### What will vue-feathers do for me?
+
+Vue-feathers makes it simple to access your feathers server, especially fetching and storing data in Vue components.
+
+The `feathers-data` and `feathers-stream` even allow you to fetch and use data without writing any JavaScript. 
+
+Being able to offload data handling to these vue-feathers components keeps your components extremely clean.
+
+### Realtime-first?
+
+If your feathers server uses feathers-reactive and is connected to an appropriate data source such as RethinkDB, vue-feathers can tap into these realtime data streams with mixins and the `feathers-stream` component.
+
+## Getting Started
 ```
 npm install @vue-feathers/vue-feathers
 ```
-You'll need to set up a feathers client in your app. Each client is different. This example uses SocketIO and feathers-reactive for real-time events.
+You'll need to set up a feathers client in your app. Each client is different. This example client uses SocketIO and feathers-reactive for real-time events.
 ```js
 import feathers from '@feathersjs/feathers'
 import socketio from '@feathersjs/socketio-client'
