@@ -23,7 +23,8 @@ module.exports = {
   },
   data() {
     return {
-      datum: {}
+      datum: {},
+      dat: [],
     }
   },
   computed: {
@@ -41,21 +42,30 @@ module.exports = {
       this.$F.service(this.endpoint)
         .watch({listStrategy: 'always'})
         .find({query: this._query})
-        .subscribe(d => {this.datum = d[0]})
+        .subscribe(d => {
+          this.dat = d
+          this.datum = d[0]
+        })
     },
   },
-  mounted() {
-    if (this.immediate) {
-      if (this.immediate && this.realtime) {
-        this.sub()
-      } else {
-        this.find()
-      }
-    }
+  watch: {
+    _query() {
+      this.$nextTick(() => {
+        console.log(this._query)
+        if (this.immediate) {
+          if (this.immediate && this.realtime) {
+            this.sub()
+          } else {
+            this.find()
+          }
+        }
+      })
+    },
   },
   render() {
     return this.$scopedSlots.default({
       datum: this.datum,
+      dat: this.dat,
       find: this.find,
       sub: this.sub,
       query: this._query,
