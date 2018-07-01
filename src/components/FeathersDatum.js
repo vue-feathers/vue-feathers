@@ -51,7 +51,6 @@ module.exports = {
   watch: {
     _query() {
       this.$nextTick(() => {
-        console.log(this._query)
         if (this.immediate) {
           if (this.immediate && this.realtime) {
             this.sub()

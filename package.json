@@ -1,6 +1,6 @@
 {
   "name": "@vue-feathers/vue-feathers",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Vue components and helper functions for Feathers",
   "main": "src/index.js",
   "scripts": {
