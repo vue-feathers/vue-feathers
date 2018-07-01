@@ -61,6 +61,6 @@ const StreamsMixin = (endpoints) => {
 }
 
 module.exports = {
-  ListMixin,
+  ListsMixin,
   StreamsMixin,
 }
