@@ -25,41 +25,60 @@ module.exports = {
     return {
       datum: {},
       dat: [],
+      fetchedId: null,
+      subscription: null,
     }
   },
   computed: {
     _query() {
-      return this.query 
-        ? this.query 
-        : this.id
-          ? {id: this.id}
-          : null
+      return this.fetchedId
+        ? {id: this.fetchedId}
+        : this.query 
+          ? this.query 
+          : this.id
+            ? {id: this.id}
+            : null
     }
   },
   methods: {
-    find() {
-      this.$F.service(this.endpoint)
-        .find({query: this._query})
-        .then(d => {this.datum = d[0]})
-    },
     sub() {
-      this.$F.service(this.endpoint)
+      this.subscription = this.$F.service(this.endpoint)
         .watch({listStrategy: 'always'})
         .find({query: this._query})
         .subscribe(d => {
           if (d[0]) {
             this.datum = d[0]
+            this.fetchedId = d[0].id
+          } else if (this.fetchedId) {
+            this.reSeed()
           }
         })
     },
+    reSeed() {
+      this.$F.service(this.endpoint)
+        .find({query: {id: this.fetchedId}})
+        .then(d => {this.datum = d[0]})
+    },
+    reset() {
+      this.datum = {}
+      this.fetchedId = null
+      if (this.subscription) {
+        this.subscription.unsubscribe()
+        this.subscription = null
+      }
+    },
   },
   watch: {
+    endpoint() {
+      this.reset()
+    },
+    query() {
+      this.reset()
+    },
     _query() {
-      if (this._query && this.immediate) {
-        if (this.immediate && this.realtime) {
+      if (this._query ) {
+        if (!this.subscription) {
           this.sub()
-        } else {
-          this.find()
         }
       }
     },
@@ -68,7 +87,6 @@ module.exports = {
     return this.$scopedSlots.default({
       datum: this.datum,
       dat: this.dat,
-      find: this.find,
       sub: this.sub,
       query: this._query,
     })
