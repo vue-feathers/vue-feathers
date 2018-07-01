@@ -29,7 +29,11 @@ module.exports = {
   },
   computed: {
     _query() {
-      return this.query ? this.query : {id: this.id}
+      return this.query 
+        ? this.query 
+        : this.id
+          ? {id: this.id}
+          : null
     }
   },
   methods: {
