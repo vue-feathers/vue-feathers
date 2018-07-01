@@ -1,7 +1,7 @@
 module.exports = {
   props: {
     'endpoint': {
-      type: Array,
+      type: String,
       default: [],
       required: true,
     },
