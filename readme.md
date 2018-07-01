@@ -10,6 +10,10 @@ Feathers returns all data to you as if it was from NoSQL sources:
 
     [{obj1}, {obj2}, {obj3}, ...]
 
+This makes it very easy to iterate over its datasets in Vue, React, etc.
+
+Feathers also has done a lot of work to make realtime connections trivial to set up.
+
 ### What will vue-feathers do for me?
 
 Vue-feathers makes it simple to access your feathers server, especially fetching and storing data in Vue components.
