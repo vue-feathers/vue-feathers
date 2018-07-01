@@ -2,7 +2,6 @@ module.exports = {
   props: {
     'endpoint': {
       type: String,
-      default: [],
       required: true,
     },
     'id': {
@@ -59,6 +58,7 @@ module.exports = {
       datum: this.datum,
       find: this.find,
       sub: this.sub,
+      query: this._query,
     })
   },
 }
