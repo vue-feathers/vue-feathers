@@ -1,5 +1,7 @@
 # Vue-Feathers
 
+> Realtime-frist Vue integrations for Feathers 
+
 ### Getting Started
 ```
 npm install @vue-feathers/vue-feathers
