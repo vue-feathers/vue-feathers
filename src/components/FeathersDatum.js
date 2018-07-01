@@ -50,15 +50,13 @@ module.exports = {
   },
   watch: {
     _query() {
-      this.$nextTick(() => {
-        if (this.immediate) {
-          if (this.immediate && this.realtime) {
-            this.sub()
-          } else {
-            this.find()
-          }
+      if (this._query && this.immediate) {
+        if (this.immediate && this.realtime) {
+          this.sub()
+        } else {
+          this.find()
         }
-      })
+      }
     },
   },
   render() {
