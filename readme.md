@@ -14,7 +14,7 @@ Feathers returns all data to you as if it was from NoSQL sources:
 
 Vue-feathers makes it simple to access your feathers server, especially fetching and storing data in Vue components.
 
-The `feathers-data` and `feathers-stream` even allow you to fetch and use data without writing any JavaScript. 
+The `feathers-data` and `feathers-stream` components even allow you to fetch and use data without writing any JavaScript. 
 
 Being able to offload data handling to these vue-feathers components keeps your components extremely clean.
 
