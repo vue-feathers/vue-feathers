@@ -39,7 +39,7 @@ module.exports = {
     }
   },
   render() {
-    this.$scopedSlots.default({
+    return this.$scopedSlots.default({
       data: this.wrapper,
       sub: this.sub,
       subAll: this.subAll,
