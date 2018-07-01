@@ -5,5 +5,6 @@ module.exports = {
     Vue.prototype.$F = options.feathersClient
     Vue.component('feathers-data', components.FeathersData)
     Vue.component('feathers-stream', components.FeathersStream)
+    Vue.component('feathers-datum', components.FeathersDatum)
   },
 }
