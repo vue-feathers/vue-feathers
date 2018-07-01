@@ -47,8 +47,9 @@ module.exports = {
         .watch({listStrategy: 'always'})
         .find({query: this._query})
         .subscribe(d => {
-          this.dat = d
-          this.datum = d[0]
+          if (d[0]) {
+            this.datum = d[0]
+          }
         })
     },
   },
