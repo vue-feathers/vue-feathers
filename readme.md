@@ -178,3 +178,13 @@ A little bit more HTML, but **zero** JavaScript.
 
 A FeathersStream works just the same way except it keeps the data it provides constantly up to date. 
 
+### FeathersDatum
+
+Datum is the singular form of 'data'. The FeathersDatum object connects to a single endpoint and provides a single record. You can pass in an id or a feathers query object, and you can toggle whether or not the record should be wired for realtime.
+```html
+<feathers-datum endpoint="users" id="ABC-DEFG-12345" realtime>
+  <div slot-scope="{datum}">
+    {{datum}}
+  </div>
+</feathers-datum>
+```
