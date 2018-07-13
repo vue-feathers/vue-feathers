@@ -25,13 +25,7 @@ module.exports = {
           .watch({listStrategy: 'always'})
           .find({query: this.queryset[endpoint]})
           .subscribe(d => {
-            if (d.length) {
-              // console.log(">>> data retrieved")
-              this.streams[endpoint].data = d
-            } else if (this.fetchedId) {
-              // console.log(">>> data deleted")
-              this.streams[endpoint].data = []
-            }
+            this.streams[endpoint].data = d
           })
       }
     },
@@ -47,8 +41,10 @@ module.exports = {
     },
     unsub() {
       for (let endpoint of this.endpoints) {
-        this.streams[endpoint].subscription.unsubscribe()
-        this.streams[endpoint].subscription = null
+        if (endpoint in this.streams) {
+          this.streams[endpoint].subscription.unsubscribe()
+          this.streams[endpoint].subscription = null
+        }
       }
     },
     reset() {
@@ -71,7 +67,7 @@ module.exports = {
   },
   render() {
     return this.$scopedSlots.default({
-      datum: this.datum,
+      streams: this.streams,
     })
   },
 }
