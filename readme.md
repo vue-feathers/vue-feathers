@@ -1,6 +1,6 @@
 # vue-feathers
 
-> Realtime-frist Vue integrations for Feathers 
+> Realtime Vue integrations for Feathers 
 
 ### What's Feathers?
 
@@ -164,11 +164,12 @@ Recreating the same users example:
 
 ```html
 <template>
-  <feathers-data endpoints="['users']"/>
-    <span slot-scope="{data}" v-for="user in data.users" :key="user.id">
-      {{user.name}}
+  <observable-stream :queryset="{users:{isAdmin: true}, roles: {}}"/>
+    <span slot-scope="{streams}" v-for="endpoint in Object.keys(streams)" :key="endpoint">
+      Returns an array of records
+      {{endpoint.data}}
     </span>
-  </feathers-data/>
+  </feathers-stream/>
 </template>
 ```
 
@@ -178,13 +179,13 @@ A little bit more HTML, but **zero** JavaScript.
 
 A FeathersStream works just the same way except it keeps the data it provides constantly up to date. 
 
-### FeathersDatum
+### Observable Object
 
-Datum is the singular form of 'data'. The FeathersDatum object connects to a single endpoint and provides a single record. You can pass in an id or a feathers query object, and you can toggle whether or not the record should be wired for realtime.
+Fetches the first element of the provided query from a single endpoint.
 ```html
-<feathers-datum endpoint="users" id="ABC-DEFG-12345" realtime>
-  <div slot-scope="{datum}">
+<observable-object endpoint="users" :query="{username: 'moot'}">
+  <div slot-scope="{object}">
     {{datum}}
   </div>
-</feathers-datum>
+</observable-object>
 ```
