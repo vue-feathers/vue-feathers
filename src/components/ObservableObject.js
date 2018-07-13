@@ -1,36 +1,58 @@
 module.exports = {
   props: {
-    'queryset': {
+    'endpoint': {
+      type: String,
+      required: true,
+    },
+    'query': {
       type: Object,
       default: null,
       required: true,
     },
   },
-  computed: {
-    endpoints() {
-      return Object.keys(this.queryset)
-    },
-  },
   data() {
     return {
       init: false,
-      streams: {},
+      datum: {},
+      fetchedId: null,
+      subscription: null,
     }
   },
   methods: {
     sub() {
-      for (let endpoint of this.endpoints) {
-        this.streams[endpoint] = {} 
-        this.streams[endpoint].subscription = this.$F.service(endpoint)
-          .watch({listStrategy: 'always'})
-          .find({query: this.queryset[endpoint]})
-          .subscribe(d => {
-            this.streams[endpoint].data = d
-          })
-      }
+      // Run the 
+      this.subscription = this.$F.service(this.endpoint)
+        .watch({listStrategy: 'always'})
+        .find({query: this.query})
+        .subscribe(d => {
+          if (d[0]) {
+            // console.log(">>> data retrieved")
+            this.datum = d[0]
+            this.fetchedId = d[0].id
+          } else if (this.fetchedId) {
+            // console.log(">>> data may have been deleted")
+            this.reSeed()
+          }
+        })
+    },
+    reSeed() {
+      // Manual fetch by ID to confirm deletion when subscription returns an empty array.
+      this.$F.service(this.endpoint)
+        .find({query: {id: this.fetchedId}})
+        .then(d => {
+          // console.log('>>> reseeding')
+          this.datum = d[0]
+        })
+    },
+    reset() {
+      // console.log('>>> resetting')
+      this.init= false
+      this.datum = {}
+      this.fetchedId = null
+      this.unsub()
     },
     fetchIfAble() {
-      if (Object.keys(this.queryset).length) {
+      if (this.query && this.query.service) {
         if (!this.subscription) {
           // console.log('>>> fetching')
           this.unsub()
@@ -40,23 +62,20 @@ module.exports = {
       }
     },
     unsub() {
-      for (let endpoint of this.endpoints) {
-        if (endpoint in this.streams) {
-          this.streams[endpoint].subscription.unsubscribe()
-          this.streams[endpoint].subscription = null
-        }
+      if (this.subscription) {
+        // console.log('>>> unsubscribing')
+        this.subscription.unsubscribe()
+        this.subscription = null
       }
-    },
-    reset() {
-      // console.log('>>> resetting')
-      this.init= false
-      this.unsub()
-      this.streams = {}
     },
   },
   watch: {
-    queryset() {
-      // console.log('>>> queryset changed')
+    endpoint() {
+      // console.log('>>> endpoint changed')
+      this.reset()
+    },
+    query() {
+      // console.log('>>> query changed')
       this.init ? this.reset() : null
       this.fetchIfAble()
     },
@@ -67,7 +86,7 @@ module.exports = {
   },
   render() {
     return this.$scopedSlots.default({
-      streams: this.streams,
+      datum: this.datum,
     })
   },
 }
