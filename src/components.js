@@ -1,7 +1,7 @@
-const FeathersObservable = require('./components/FeathersObservable')
-const FeathersObservableStream = require('./components/FeathersObservableStream')
+const ObservableObject = require('./components/ObservableObject')
+const ObservableStream = require('./components/ObservableStream')
 
 module.exports = {
-  FeathersObservable,
-  FeathersObservableStream,
+  ObservableObject,
+  ObservableStream,
 }
