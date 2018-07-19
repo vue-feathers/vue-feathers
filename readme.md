@@ -1,30 +1,32 @@
 # vue-feathers
 
-> Realtime Vue integrations for Feathers 
+> A component to handle your feathers connections 
+
+### Versioning
+
+gitlab link: [https://gitlab.com/VueFeathers/vue-feathers](https://gitlab.com/VueFeathers/vue-feathers)
+
+version: 0.2.1
+
+todos:
+  * example needs feathers client
+  * plugin update
+
+roadmap:
+  * feathers-reactive first, then vanilla feathers
 
 ### What's Feathers?
 
-It's a server-side framework that encapsulates your DBs and other APIs as **services**. Services provide a simple, common syntax of just 7 functions for interfacing with your backend.  
+It's a framework that runs both server-side and client-side. On the server, it wraps your backends (DB connections, API connections, etc.) and automagically provides both REST endpoints and socket connections for interfacing with these connected backends. 
 
-Feathers returns all data to you as if it was from NoSQL sources:
-
-    [{obj1}, {obj2}, {obj3}, ...]
-
-This makes it very easy to iterate over its datasets in Vue, React, etc.
-
-Feathers also has done a lot of work to make realtime connections trivial to set up.
+On the frontend, it provides a standardized syntax for interfacing with any given DB. This frees you to change the backend without changing the frontend at all. It also uses a data format that plays very nicely with JSON and NoSQL DBs.
 
 ### What will vue-feathers do for me?
 
-Vue-feathers makes it simple to access your feathers server, especially fetching and storing data in Vue components.
-
-The `feathers-data` and `feathers-stream` components even allow you to fetch and use data without writing any JavaScript. 
-
-Being able to offload data handling to these vue-feathers components keeps your components extremely clean.
-
-### Realtime-first?
-
-If your feathers server uses feathers-reactive and is connected to an appropriate data source such as RethinkDB, vue-feathers can tap into these realtime data streams with mixins and the `feathers-stream` component.
+Three things:
+* Makes the full feathers client readily availabile in your Vue components
+* Helpful pre-made utility functions and mixins
+* A swiss army knife Vue component that handles the hard parts for you
 
 ## Getting Started
 ```
@@ -52,7 +54,7 @@ Vue.use(VueFeathers, feathersClient)
 
 ### Nuxt
 
-In Nuxt, just put the feathers client in its own file, export it, and make a plugin like so: 
+In Nuxt, you should put the feathers client in its own file and export it so that you can use the same client in other places of your app for consistency. Then make a nuxt plugin: 
 ```js
 import feathersClient from '~/path/to/feathersClient.js'
 import Vue from 'vue'
