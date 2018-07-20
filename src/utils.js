@@ -1,5 +1,5 @@
 const data = (obj) => (() => obj)
 
-module.exports = {
+export default {
   data
 }

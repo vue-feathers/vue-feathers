@@ -20,12 +20,10 @@
 </template>
 
 <script>
-import FeathersStream from './../../../src/components/FeathersStream.js'
-
 export default {
   name: 'HelloWorld',
-  components: {
-    'feathers-stream': FeathersStream,
+  mounted() {
+    console.log(this)
   },
 }
 </script>

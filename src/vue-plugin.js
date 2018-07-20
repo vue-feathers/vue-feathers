@@ -1,6 +1,6 @@
 const components = require('./components.js')
 
-module.exports = {
+export default {
   install: (Vue, options) => {
     Vue.prototype.$F = options.feathersClient
     Vue.component('observable-object', components.ObservableObject)

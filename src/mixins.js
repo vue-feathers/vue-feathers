@@ -60,7 +60,7 @@ const StreamsMixin = (endpoints) => {
   }
 }
 
-module.exports = {
+export default {
   ListsMixin,
   StreamsMixin,
 }
