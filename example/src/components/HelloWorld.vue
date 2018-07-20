@@ -1,5 +1,5 @@
 <template>
-  <feathers-stream>
+  <feathers-stream :queryset="{meta:'meta'}">
     <div class="hello" slot-scope="streams">
       <h2><pre>{{ streams }}</pre></h2>
       <p>
@@ -22,9 +22,6 @@
 <script>
 export default {
   name: 'HelloWorld',
-  mounted() {
-    console.log(this)
-  },
 }
 </script>
 

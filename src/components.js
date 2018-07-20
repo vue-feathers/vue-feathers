@@ -1,9 +1,5 @@
-const FeathersStream = require('./components/FeathersStream')
-const ObservableObject = require('./components/ObservableObject')
-const ObservableStream = require('./components/ObservableStream')
+import FeathersStream from './components/FeathersStream'
 
 export default {
-  ObservableObject,
-  ObservableStream,
   FeathersStream,
 }

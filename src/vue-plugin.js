@@ -1,10 +1,6 @@
-const components = require('./components.js')
+import components from './components.js'
 
-export default {
-  install: (Vue, options) => {
-    Vue.prototype.$F = options.feathersClient
-    Vue.component('observable-object', components.ObservableObject)
-    Vue.component('observable-stream', components.ObservableStream)
-    Vue.component('feathers-stream', components.FeathersStream)
-  },
+export default (Vue, options) => {
+  Vue.prototype.$F = options.feathersClient
+  Vue.component('feathers-stream', components.FeathersStream)
 }
