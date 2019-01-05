@@ -1,4 +1,6 @@
-export default {
+const Vue = require('vue').default
+
+module.exports = {
   props: {
     'queryset': {
       type: Object,
@@ -20,7 +22,9 @@ export default {
   methods: {
     sub() {
       for (let endpoint of this.endpoints) {
-        this.streams[endpoint] = {} 
+        Vue.set(this.streams, endpoint, {})
+        Vue.set(this.streams[endpoint], 'subscription', {})
+        Vue.set(this.streams[endpoint], 'data', {})
         this.streams[endpoint].subscription = this.$F.service(endpoint)
           .watch({listStrategy: 'always'})
           .find({query: this.queryset[endpoint]})
@@ -41,7 +45,7 @@ export default {
     },
     unsub() {
       for (let endpoint of this.endpoints) {
-        if (endpoint in this.streams) {
+        if (endpoint in this.streams && this.streams[endpoint].subscription) {
           this.streams[endpoint].subscription.unsubscribe()
           this.streams[endpoint].subscription = null
         }

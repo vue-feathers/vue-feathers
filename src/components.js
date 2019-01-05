@@ -1,5 +1,7 @@
-import FeathersStream from './components/FeathersStream'
+import ObservableStream from './components/ObservableStream'
+import ObservableObject from './components/ObservableObject'
 
 export default {
-  FeathersStream,
+  ObservableStream,
+  ObservableObject,
 }

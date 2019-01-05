@@ -1,10 +1,14 @@
 {
   "name": "@vue-feathers/vue-feathers",
-  "version": "0.2.00",
+  "version": "0.2.1",
   "description": "Vue components and helper functions for Feathers",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/vue-feathers/vue-feathers"
   },
   "keywords": [
     "vue",
@@ -12,11 +16,8 @@
     "nuxt"
   ],
   "author": "sirberus",
-  "license": "MIT",
+  "license": "ISC",
   "dependencies": {
-    "@feathersjs/socketio-client": "^1.1.0",
-    "cookie-storage": "^3.1.0",
-    "feathers-reactive": "^0.7.1",
-    "socket.io-client": "^2.1.1"
+    "vue": "^2.5.21"
   }
 }

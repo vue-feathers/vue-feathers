@@ -177,10 +177,6 @@ Recreating the same users example:
 
 A little bit more HTML, but **zero** JavaScript. 
 
-### FeathersStream
-
-A FeathersStream works just the same way except it keeps the data it provides constantly up to date. 
-
 ### Observable Object
 
 Fetches the first element of the provided query from a single endpoint.
