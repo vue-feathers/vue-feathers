@@ -1,4 +1,4 @@
-## v0.3.1-2 - 2019-01-11
+## v0.3.1-3 - 2019-01-11
 - Vue plugin fixes
 - Readme updates
 

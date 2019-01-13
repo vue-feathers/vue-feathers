@@ -1,5 +1,7 @@
-export { default as plugin } from './vue-plugin.js'
-export { default as mixins } from './mixins.js'
+import plugin from './vue-plugin.js'
+import mixins from './mixins.js'
+
+export { plugin, mixins }
 
 export default {
   install: plugin,
