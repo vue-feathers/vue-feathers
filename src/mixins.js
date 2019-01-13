@@ -8,22 +8,18 @@ const ListsMixin = (endpoints) => {
       return obj
     },
     methods: {
-      find(endpoint) {
+      find(endpoint, findParams) {
         this.$F.service(endpoint)
-          .find()
+          .find(findParams)
           .then(d => {
             this[endpoint] = d
           })
       },
-      findAll() {
+      findAll(findParams) {
         for (let endpoint of endpoints) {
-          this.$F.service(endpoint)
-            .find()
-            .then(d => {
-              this[endpoint] = d
-            })
+          this.find(endpoint, findParams)
         }
-      },
+      }
     },
   }
 }
@@ -41,22 +37,22 @@ const StreamsMixin = (endpoints) => {
       return obj
     },
     methods: {
-      sub(endpoint) {
+      sub(endpoint, findParams) {
         this.unsub(endpoint) // unsub() before subbing in case component is re-mounted.
         this.$set( // vm.$set() avoids Vue.js caveat on object update reactivity.
           this.subscriptions,
           endpoint,
           this.$F.service(endpoint)
             .watch({listStrategy: 'always'})
-            .find()
+            .find(findParams)
             .subscribe(d => {
               this[endpoint] = d
             })
         )
       },
-      subAll() {
+      subAll(findParams) {
         for (let endpoint of endpoints) {
-          this.sub(endpoint)
+          this.sub(endpoint, findParams)
         }
       },
       unsub(endpoint) {
