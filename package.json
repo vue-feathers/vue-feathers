@@ -1,6 +1,6 @@
 {
   "name": "@vue-feathers/vue-feathers",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Vue components and helper functions for Feathers",
   "main": "src/index.js",
   "scripts": {
@@ -16,8 +16,5 @@
     "nuxt"
   ],
   "author": "sirberus",
-  "license": "ISC",
-  "dependencies": {
-    "vue": "^2.5.21"
-  }
+  "license": "ISC"
 }
