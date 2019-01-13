@@ -9,51 +9,40 @@ npm install @vue-feathers/vue-feathers
 
 You'll need to set up a feathers client in your app. Each client is different. This example client uses SocketIO and feathers-reactive for real-time events.
 
-```js
-import feathers from '@feathersjs/feathers'
-import socketio from '@feathersjs/socketio-client'
-import reactive from 'feathers-reactive'
-import io from 'socket.io-client'
-
-const socket = io('http://localhost:3030', {transports: ['websocket']})
-
-const feathersClient = feathers()
-  .configure(socketio(socket))
-  .configure(reactive({idField:'_id'}))
-```
+> <details>
+>   <summary>Example Feathers Client</summary>
+>
+>```js
+> import feathers from '@feathersjs/feathers'
+> import socketio from '@feathersjs/socketio-client'
+> import reactive from 'feathers-reactive'
+> import io from 'socket.io-client'
+>
+> const socket = io('http://localhost:3030', {transports: ['websocket']})
+>
+> export const feathersClient = feathers()
+>   .configure(socketio(socket))
+>   .configure(reactive({idField:'_id'}))
+>```
+> </details>
 
 Then import and install the `vue-feathers` plugin
 
 ```js
 import Vue from 'vue'
-import {VueFeathers} from '@vue-feathers/vue-feathers'
+import feathersClient from 'path/to/your/feathers/client'
+import VueFeathers from '@vue-feathers/vue-feathers'
+
 Vue.use(VueFeathers, { feathersClient })
 ```
 
 ### Nuxt
 
-In Nuxt, you should put the feathers client in its own file and export it so that you can use the same client in other places of your app for consistency. Then make a nuxt plugin: 
-
-```js
-import feathersClient from '~/path/to/feathersClient.js'
-import Vue from 'vue'
-import {VueFeathers} from '@vue-feathers/vue-feathers'
-Vue.use(VueFeathers, { feathersClient })
-```
-
-Don't forget to register this alongisde your other plugins in your nuxt.config.js
+Just put the above code in a js file and register it in nuxt.config.js as a plugin.
 
 ## The Feathers Client: $F
 
 The plugin registers the feathers client on all Vue components under `this.$F`, so in a component you could fetch and display all users like so:
-
-```html
-<template>
-  <div>
-    <span v-for="user in users" :key="user.id">{{user.name}}</span>
-  </div>
-</template>
-```
 
 ```js
 export default {

@@ -1,10 +1,7 @@
-import plugin from './vue-plugin.js'
-import _mixins from './mixins.js'
-
-export const VueFeathers = plugin
-export const mixins = _mixins
+export import plugin from './vue-plugin.js'
+export import mixins from './mixins.js'
 
 export default {
-  VueFeathers,
+  install: plugin,
   mixins,
 }
