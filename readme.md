@@ -27,7 +27,7 @@ Then import and install the `vue-feathers` plugin
 ```js
 import Vue from 'vue'
 import {VueFeathers} from '@vue-feathers/vue-feathers'
-Vue.use(VueFeathers, feathersClient)
+Vue.use(VueFeathers, { feathersClient })
 ```
 
 ### Nuxt
@@ -38,7 +38,7 @@ In Nuxt, you should put the feathers client in its own file and export it so tha
 import feathersClient from '~/path/to/feathersClient.js'
 import Vue from 'vue'
 import {VueFeathers} from '@vue-feathers/vue-feathers'
-Vue.use(VueFeathers, feathersClient)
+Vue.use(VueFeathers, { feathersClient })
 ```
 
 Don't forget to register this alongisde your other plugins in your nuxt.config.js
@@ -62,12 +62,18 @@ export default {
       users: [], // Initialize for storing fetched users 
     }
   },
-  mounted() { // When the component is mounted...
-    this.$F.service('users').find() // find all users.
-      .then(users => { // When the data arrives... 
-        this.users = users // store it.
-      })
+  mounted() {
+    this.findUsers()
   },
+  methods: {
+    findUsers() {
+      this.$F.service('users')
+        .find()               // Find all users.
+        .then(users => {      // When the data arrives... 
+          this.users = users  // store it.
+        })
+    }
+  }
 }
 ```
 
@@ -108,17 +114,30 @@ export default {
 export default {
   data() {
     return {
-      users: [], // Initialize for storing fetched users 
+      users: [], // Initialize for storing fetched users
+      subscription: null, // Initialize for storing the subscription to the 'users' endpoint 
     }
   },
-  mounted() { // When the component is mounted...
-    this.$F.service('users')
-      .watch({listStrategy: 'always'}) // watch 'users' for changes and always send the full dataset on change
-      .find() // fetch all
-      .subscribe(users => { // Whenever data arrives... 
-        this.users = users // store it.
-      })
+  mounted() {
+    this.sub()
   },
+  methods: {
+    sub() {
+      this.unsub() // Unsub before sub in case component is remounted (ex. hot reload in dev mode)
+      this.subscription = this.$F.service('users')
+        .watch() // Watch 'users' for changes.
+        .find()  // On change, fetch all records.
+        .subscribe(users => { // Whenever data arrives... 
+          this.users = users  // store it.
+        })
+    },
+    unsub() {
+      if (this.subscription) {
+        this.subscription.unsubscribe()
+        this.subscription = null
+      }
+    }
+  }
 }
 ```
 
