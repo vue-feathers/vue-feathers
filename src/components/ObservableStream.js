@@ -1,5 +1,3 @@
-const Vue = require('vue').default
-
 module.exports = {
   props: {
     'queryset': {
@@ -22,9 +20,9 @@ module.exports = {
   methods: {
     sub() {
       for (let endpoint of this.endpoints) {
-        Vue.set(this.streams, endpoint, {})
-        Vue.set(this.streams[endpoint], 'subscription', {})
-        Vue.set(this.streams[endpoint], 'data', {})
+        this.$set(this.streams, endpoint, {})
+        this.$set(this.streams[endpoint], 'subscription', {})
+        this.$set(this.streams[endpoint], 'data', {})
         this.streams[endpoint].subscription = this.$F.service(endpoint)
           .watch({listStrategy: 'always'})
           .find({query: this.queryset[endpoint]})
