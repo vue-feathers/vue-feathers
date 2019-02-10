@@ -1,22 +1,23 @@
 <template>
-  <feathers-stream :queryset="{meta:'meta'}">
-    <div class="hello" slot-scope="streams">
-      <h2><pre>{{ streams }}</pre></h2>
-      <p>
-        For guide and recipes on how to configure / customize this project,<br>
-        check out the
-        <a href="https://cli.vuejs.org" target="_blank">vue-cli documentation</a>.
-      </p>
-      <h3>Ecosystem</h3>
-      <ul>
-        <li><a href="https://router.vuejs.org" target="_blank">vue-router</a></li>
-        <li><a href="https://vuex.vuejs.org" target="_blank">vuex</a></li>
-        <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank">vue-devtools</a></li>
-        <li><a href="https://vue-loader.vuejs.org" target="_blank">vue-loader</a></li>
-        <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-      </ul>
-    </div>
-  </feathers-stream>
+  <div class="hello">
+    
+    <observable-stream paginated endpoint="notions" :query="{ }">
+      <div slot-scope="{ stream, loading, refresh, pagination }">
+        <h1>ObservableStream</h1>
+        <h2 @click="refresh">Loading: {{loading}} (click to refresh)</h2>
+        <h2 style="text-align: left; margin: auto; width: fit-content;"><pre>{{ pagination }}</pre></h2>
+        <h2 style="text-align: left; margin: auto; width: fit-content;"><pre>{{ stream }}</pre></h2>
+      </div>
+    </observable-stream>
+    
+    <observable-streams :queryset="{ notions: {} }">
+      <div slot-scope="{ notions }">
+        <h1>ObservableStreams</h1>
+        <h2 style="text-align: left; margin: auto; width: fit-content;"><pre>{{ notions }}</pre></h2>
+      </div>
+    </observable-streams>
+  
+  </div>
 </template>
 
 <script>
