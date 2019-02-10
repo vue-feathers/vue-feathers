@@ -1,4 +1,4 @@
-## v0.5 - 2019-02-09
+## v0.5.0 - v0.5.1 - 2019-02-09
 - ObservableSteam split into Stream singular and Streams plural components
 - New ObservableSteam (singular) is aliased as DataStream and will be our only component next release. 
 - New ObservableSteams (plural) is the equivalent of the old component and is deprecated (Provided for legacy compatibility) 
@@ -9,6 +9,7 @@
 - Typo fixes
 - Updated examples
   - New vue syntax
+- (v0.5.1) readme updates for NPM
 
 #### Example Repo
 - Full update

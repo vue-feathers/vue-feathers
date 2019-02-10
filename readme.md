@@ -157,16 +157,14 @@ Notes:
 
 ### Observable Stream
 
-Recreating the same users example:
+Subscribes to a query on an endpoint. Use the `paginated` prop to indicate if the endpoint returns a paginated response.
+
+Provides an object of the form { stream, loading, refresh, pagination }. (See **Scoped Props** below for details.)
 
 ```html
 <observable-stream paginated endpoint="users" :query="{ active: true }">
   <template v-slot="{ stream, loading, refresh, pagination }">
-    
-    <div v-for="(record, i) in stream" :key="`record-${i}`">
-      {{ stream }}
-    </div>
-    
+    <pre v-for="record in stream">{{ record }}</pre>    
   </template>
 </observable-stream>
 ```
@@ -180,21 +178,24 @@ Recreating the same users example:
 
 ### Observable Streams (deprecated)
 
-Given an object of the form { endpoint: query, ... }, this component provides an object of the form { endpoint: stream,... }
+Subscribes to a set of endpoint queries given an object of the form { endpoint: query, ... }. 
+
+Provides an object of the form { endpoint: stream,... }.
+
 ```html
-<observable-stream paginated :queryset="{ users: { active: true } }">
+<observable-streams :queryset="{ users: { active: true } }">
   <template v-slot="{ users }">
     <pre>{{ users }}</pre>
   </span>
-</observable-stream>
+</observable-streams>
 ```
 
 ### Observable Object (deprecated)
 
 Fetches the first element of the provided query from a single endpoint.
 ```html
-<observable-object endpoint="users" :query="{username: 'moot'}">
-  <div v-slot="{object}">
+<observable-object endpoint="users" :query="{ username: 'moot' }">
+  <div v-slot="{ object }">
     {{datum}}
   </div>
 </observable-object>
