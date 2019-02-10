@@ -3,7 +3,7 @@ import App from './App.vue'
 import store from './store'
 Vue.config.productionTip = false
 
-import {VueFeathers} from './../../src/index.js'
+import VueFeathers from './../../src/index.js'
 import {feathersClient} from './feathers-client.js'
 Vue.use(VueFeathers, {feathersClient})
 
