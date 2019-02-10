@@ -1,66 +1,86 @@
-module.exports = {
+export default {
   props: {
-    'queryset': {
-      type: Object,
-      default: null,
-      required: true,
+    endpoint: {
+      type: String,
+      required: true
     },
-  },
-  computed: {
-    endpoints() {
-      return Object.keys(this.queryset)
-    },
+    query: Object,
+    paginated: Boolean
   },
   data() {
     return {
       init: false,
-      streams: {},
+      loading: false,
+      stream: [],
+      subscription: null,
+      total: null,
+      skip: null,
+      limit: null,
+    }
+  },
+  computed: {
+    pagination() {
+      return this.paginated 
+        ? {
+            pagination: {
+              total: this.total,
+              skip: this.skip,
+              limit: this.limit 
+            }
+          }
+        : {}
     }
   },
   methods: {
     sub() {
-      for (let endpoint of this.endpoints) {
-        this.$set(this.streams, endpoint, {})
-        this.$set(this.streams[endpoint], 'subscription', {})
-        this.$set(this.streams[endpoint], 'data', {})
-        this.streams[endpoint].subscription = this.$F.service(endpoint)
-          .watch({listStrategy: 'always'})
-          .find({query: this.queryset[endpoint]})
-          .subscribe(d => {
-            this.streams[endpoint].data = d
-          })
-      }
-    },
-    fetchIfAble() {
-      if (Object.keys(this.queryset).length) {
-        if (!this.subscription) {
-          // console.log('>>> fetching')
-          this.unsub()
-          this.sub()
-          this.init = true
-        }
-      }
+      this.loading = true
+      this.subscription = this.$F.service(this.endpoint)
+        .watch({ listStrategy: 'always' })
+        .find({ query: this.query })
+        .subscribe(d => {
+          this.loading = false
+          if (this.paginated) {
+            this.stream = d.data
+            this.total = d.total
+            this.skip = d.skip
+            this.limit = d.limit
+          } else {
+            this.stream = d
+          }
+        })
     },
     unsub() {
-      for (let endpoint of this.endpoints) {
-        if (endpoint in this.streams && this.streams[endpoint].subscription) {
-          this.streams[endpoint].subscription.unsubscribe()
-          this.streams[endpoint].subscription = null
-        }
+      if (this.subscription) {
+        this.subscription.unsubscribe()
+        this.subscription = null
       }
     },
     reset() {
       // console.log('>>> resetting')
-      this.init= false
+      this.init = false
       this.unsub()
-      this.streams = {}
+      this.stream = []
+      this.total = null
+      this.skip = null
+      this.limit = null
     },
+    fetchIfAble() {
+      // console.log('>>> fetching')
+      if (this.query) {
+        this.unsub()
+        this.sub()
+        this.init = true
+      }
+    },
+    refresh() {
+      this.reset()
+      this.fetchIfAble()
+    }
   },
   watch: {
-    queryset() {
+    query() {
       // console.log('>>> queryset changed')
-      this.init ? this.reset() : null
-      this.fetchIfAble()
+      this.refresh()
     },
   },
   mounted() {
@@ -69,7 +89,11 @@ module.exports = {
   },
   render() {
     return this.$scopedSlots.default({
-      streams: this.streams,
+      stream: this.stream,
+      loading: this.loading,
+      refresh: this.refresh,
+      paginated: this.paginated,
+      ...this.pagination
     })
   },
 }

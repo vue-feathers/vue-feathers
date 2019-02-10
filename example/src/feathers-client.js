@@ -5,7 +5,8 @@ import auth from '@feathersjs/authentication-client'
 import io from 'socket.io-client'
 import { CookieStorage } from 'cookie-storage'
 
-const socket = io('http://localhost:3030', {transports: ['websocket']})
+// Connecting to a Kadabra server, see npm package @kadabra/server
+const socket = io('http://localhost:7777', {transports: ['websocket']})
 
 export const feathersClient = feathers()
   .configure(socketio(socket))

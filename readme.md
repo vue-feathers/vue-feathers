@@ -71,7 +71,7 @@ export default {
 The above scenario is so common that I wrapped it in a mixin. Using the same example with the same HTML:
 
 ```js
-import {mixins} from '@vue-feathers/vue-feathers'
+import { mixins } from '@vue-feathers/vue-feathers'
 const usersMixin = mixins.ListsMixin(['users']) // takes a list of service names
 
 export default {
@@ -111,11 +111,11 @@ export default {
     this.sub()
   },
   methods: {
-    sub() {
+    sub(query) {
       this.unsub() // Unsub before sub in case component is remounted (ex. hot reload in dev mode)
       this.subscription = this.$F.service('users')
         .watch() // Watch 'users' for changes.
-        .find()  // On change, fetch all records.
+        .find({ query })  // On change, fetch all records.
         .subscribe(users => { // Whenever data arrives... 
           this.users = users  // store it.
         })
@@ -139,42 +139,62 @@ const usersMixin = mixins.StreamsMixin(['users'])
 export default {
   mixins: [usersMixin],
   mounted() {
-    this.sub('users') // or use this.subAll() to subscribe to all at once
+    this.sub('users', { /* optional query goes here */ }) 
+    // or use this.subAll(query) to subscribe to all at once
   },
 }
 ```
 
 And it scales in the same manner as the ListsMixin.
 
-## Components
+## Data Provider Components
 
-Here's where the magic happens. These data providers dynamically fetch and provide data. They render no DOM, like `<template>` elements.
+Here's where the magic happens. These data providers dynamically fetch and provide data via scoped slots. 
 
-Both components are installed globally by the plugin.
+Notes: 
+- they render no DOM, like `<template>` and `<slot>` elements
+- :class and such do nothing on these components
 
 ### Observable Stream
 
 Recreating the same users example:
 
 ```html
-<template>
-  <observable-stream :queryset="{users:{isAdmin: true}, roles: {}}"/>
-    <span slot-scope="{streams}" v-for="endpoint in Object.keys(streams)" :key="endpoint">
-      Returns an array of records
-      {{endpoint.data}}
-    </span>
-  </feathers-stream/>
-</template>
+<observable-stream paginated endpoint="users" :query="{ active: true }">
+  <template v-slot="{ stream, loading, refresh, pagination }">
+    
+    <div v-for="(record, i) in stream" :key="`record-${i}`">
+      {{ stream }}
+    </div>
+    
+  </template>
+</observable-stream>
 ```
 
-A little bit more HTML, but **zero** JavaScript. 
+#### Scoped Props
 
-### Observable Object
+- `stream` is an array of DB records, defaulting to an empty array before data arrives
+- `loading` is false when requested data has been fetched, true when waiting for requested data
+- `refresh` is a function that resets the stream and re-fetches data
+- `pagination` is data is present when "paginated" is set to true on observable-stream
+
+### Observable Streams (deprecated)
+
+Given an object of the form { endpoint: query, ... }, this component provides an object of the form { endpoint: stream,... }
+```html
+<observable-stream paginated :queryset="{ users: { active: true } }">
+  <template v-slot="{ users }">
+    <pre>{{ users }}</pre>
+  </span>
+</observable-stream>
+```
+
+### Observable Object (deprecated)
 
 Fetches the first element of the provided query from a single endpoint.
 ```html
 <observable-object endpoint="users" :query="{username: 'moot'}">
-  <div slot-scope="{object}">
+  <div v-slot="{object}">
     {{datum}}
   </div>
 </observable-object>
